@@ -1,0 +1,9 @@
+rmi:
+
+en sensor lanzar rmiregistry -J-Djava.security.policy=registrar.policy
+
+lanzar por cada sensor una terminal con:
+
+java -Djava.security.policy=registrar.policy Restro 2 H 1 --> los últimos datos cambiarlos por cada sensor del .txt
+
+en controlador lanzar java -Djava.security.policy=registrar.policy controladorRMI sensores.txt 
