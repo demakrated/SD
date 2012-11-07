@@ -6,6 +6,7 @@ import java.util.Calendar;
 public class ObjetoRemoto extends UnicastRemoteObject
 implements InterfazRemoto, Serializable 
 {    
+    //PARTE PRIVADA
     private int id;
     private String tipo;
     private int valor;
@@ -13,19 +14,22 @@ implements InterfazRemoto, Serializable
     private String hora;
     private int invernadero;
 
+    //PARTE PUBLICA
+    //constructor
 	public ObjetoRemoto (String id, String tipo, String invernadero) throws RemoteException 
 	{
         super();
         Calendar cal = Calendar.getInstance();
         int num = 0;
         String  sensor = "";
+        hora = "";
         fecha = "";
         num = cal.get(Calendar.DAY_OF_MONTH);   //dia
         fecha += num;
         num = cal.get(Calendar.MONTH);  //mes
         fecha += "/" + num;
         num = cal.get(Calendar.YEAR);   //año
-        fecha += "/" + num + "@";
+        fecha += "/" + num;
         hora += cal.get(Calendar.HOUR_OF_DAY);
         hora += ":" + cal.get(Calendar.MINUTE);
         valor = aleatorio(120, -20);
@@ -41,6 +45,7 @@ implements InterfazRemoto, Serializable
         return (int)(Math.random()*(max-min))+min;      
     }
     
+    //GETTERS
     @Override
     public int getId(){
         return id;
@@ -68,17 +73,5 @@ implements InterfazRemoto, Serializable
     @Override
     public String getHora(){
         return hora;
-    }
-    
-    public void tostring(){
-        String resultado = "";
-        System.out.println("#");
-        System.out.println("ID: " + id);
-        System.out.println("Tipo: " + tipo);
-        System.out.println("Valor: " + valor);
-        System.out.println("Fecha: " + fecha);
-        System.out.println("Hora: " + hora);
-        System.out.println("#");
-        
     }
 }

@@ -7,8 +7,11 @@ import java.util.logging.Logger;
 
 public class HiloControladorRMI extends Thread{
     
+    //DATOS PRIVADOS
     private boolean terminar;
     InterfazRemoto objRemoto;
+
+    //constantes
     private final int minT = -10;
     private final int maxT = 45;
     private final int minH = 0;
@@ -18,10 +21,11 @@ public class HiloControladorRMI extends Thread{
     private final String Talta = "Activando ventilacion y abriendo ventanas";
     private final String Hbaja = "Activando goteo";
     private final String Halta = "Activando deshumidificacion";
+
+    //PARTE PUBLICA
 	
+    //constructor a partir de la URL del registro
     HiloControladorRMI(String url) throws RemoteException{
-	//de rmi
-        //InterfazRemoto objetoRemoto = null;
   
         try
         {
@@ -36,21 +40,18 @@ public class HiloControladorRMI extends Thread{
         terminar = false;
     }
 
+    //ejecución de los hilos
     @Override
     public void run() {
         int resultado = 0;
         String Cadena = "";
         try{
-            while (!terminar) {
-
-            	
                 /*
                  * Se escribe en pantalla la informacion que se ha recibido del
                  * cliente
                  */
-                resultado = this.realizarOperacion();
-                Thread.sleep(3000);
-            }
+            resultado = this.realizarOperacion();
+            Thread.sleep(3000);
             this.join();
         } catch (IOException ex) {
             Logger.getLogger(HiloControladorRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,29 +61,29 @@ public class HiloControladorRMI extends Thread{
         }
     }
     
+    //se termina un hilo
     public void terminar(){
         terminar = true;
     }
     
     //parsea la cadena del socket y la interpreta para tomar medidas si es necesario
     public int realizarOperacion() throws InterruptedException, IOException {
-      
 
-                //parseo datos y lo smuestro tras recibir informacion de socket
+        //parseo datos y lo smuestro tras recibir informacion de socket
       
-                objRemoto.tostring();
-                if(objRemoto.getTipo().equals("T")){
-                    comprobarT();
-                }
-                else{
-                    comprobarH();
-                }
-                System.out.println();
+        this.tostring();
+        if(objRemoto.getTipo().equals("T")){    
+            comprobarT();
+        }
+       else{
+            comprobarH();
+        }
+        System.out.println();
 
         return 0;
     }
     
-        //comprueba los datos de un sensor de temperatura y dice si hay fallo
+    //comprueba los datos de un sensor de temperatura y dice si hay fallo
     public void comprobarT() throws RemoteException{
         if(objRemoto.getValor() < minT){
             System.out.println("¡¡ATENCION!!");
@@ -93,7 +94,9 @@ public class HiloControladorRMI extends Thread{
             System.out.println(Tbaja);
         }
         else if(objRemoto.getValor() > maxT){
+            System.out.println("¡¡ATENCION!!");
             System.out.println(falloSensor + objRemoto.getId() + " en invernadero " + objRemoto.getInvernadero());
+            System.out.println();
         }
         else{
             System.out.println(Talta);
@@ -111,10 +114,29 @@ public class HiloControladorRMI extends Thread{
             System.out.println(Hbaja);
         }
         else if(objRemoto.getValor() > maxH){
+            System.out.println("¡¡ATENCION!!");
             System.out.println(falloSensor + objRemoto.getId() + " en invernadero " + objRemoto.getInvernadero());
+            System.out.println();
         }
         else{
             System.out.println(Halta);
         }
     }
+
+    //tostring
+    public void tostring() throws RemoteException{
+
+        System.out.println("#");
+        System.out.println("Invernadero: " + objRemoto.getInvernadero());
+        System.out.println("ID: " + objRemoto.getId());
+        System.out.println("Tipo: " + objRemoto.getTipo());
+        System.out.println("Valor: " + objRemoto.getValor());
+        System.out.println("Fecha: " + objRemoto.getFecha());
+        System.out.println("Hora: " + objRemoto.getHora());
+        System.out.println("#");
+    }
+
+
+
+
 }

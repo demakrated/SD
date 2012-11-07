@@ -37,6 +37,7 @@ public class controladorRMI {
                 hl.add(hs);
                 hs.start();
                 datos = bf.readLine();
+                Thread.sleep(3000);
             }
             bf.close();
             fr.close();
